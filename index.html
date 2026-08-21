@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optima Vision Center | Optometrist in Philadelphia, PA</title>
+<meta name="description" content="Optima Vision Center — comprehensive, family, pediatric, diabetic, and special-needs eye care in Philadelphia, PA. Dr. Chelise Firmin, OD.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --cream-muted: #ECE3D2;
+    --ink: #141414;
+    --ink-soft: rgba(20,20,20,0.85);
+    --grey: #6B6559;
+    --gold: #C9A96A;
+    --gold-deep: #B08F4F;
+    --white: #FFFFFF;
+    --border: rgba(20,20,20,0.14);
+    --border-strong: rgba(20,20,20,0.9);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.625;
+    font-size: 16px;
+    position: relative;
+  }
+  h1, h2, h3, h4, .serif { font-family: 'Playfair Display', Georgia, serif; }
+  em { font-style: italic; color: var(--gold-deep); }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+  @media (min-width: 1024px) { .container { padding: 0 64px; } }
+
+  /* noise overlay */
+  .noise {
+    position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* gridlines */
+  .gridlines { position: fixed; inset: 0; pointer-events: none; z-index: 1; display: none; }
+  @media (min-width: 1024px) {
+    .gridlines { display: block; }
+    .gridlines i { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  }
+
+  /* skip link */
+  .skip-link {
+    position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--cream);
+    padding: 12px 20px; z-index: 999; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .skip-link:focus { left: 24px; top: 24px; }
+
+  /* top contact bar */
+  .topbar {
+    background: var(--ink); color: var(--cream); font-size: 12.5px; letter-spacing: 0.04em;
+  }
+  .topbar .container { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; padding-bottom: 8px; gap: 12px; flex-wrap: wrap; }
+  .topbar a { border-bottom: 1px solid transparent; }
+  .topbar a:hover, .topbar a:focus-visible { border-color: var(--gold); color: var(--gold); }
+
+  /* header */
+  header.main {
+    position: sticky; top: 0; z-index: 40; background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  }
+  header.main .container { display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 12px; }
+  @media (min-width: 900px) { header.main .container { height: 100px; } }
+  @media (max-width: 559px) { .header-actions .btn-primary { padding: 0 16px; font-size: 10.5px; height: 44px; } }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { height: 40px; width: auto; }
+  @media (min-width: 560px) { .brand img { height: 52px; } }
+  @media (min-width: 900px) { .brand img { height: 60px; } }
+  .brand .word { font-family: 'Playfair Display', serif; font-size: 19px; letter-spacing: 0.02em; line-height: 1.1; }
+  .brand .word b { display: block; font-weight: 500; }
+  .brand .word span { font-size: 10.5px; letter-spacing: 0.22em; color: var(--grey); text-transform: uppercase; }
+  nav.primary { display: none; gap: 36px; }
+  @media (min-width: 900px) { nav.primary { display: flex; } }
+  nav.primary a {
+    font-size: 12.5px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+    padding-bottom: 4px; border-bottom: 1px solid transparent;
+  }
+  nav.primary a:hover, nav.primary a:focus-visible { color: var(--gold-deep); border-color: var(--gold); }
+  .header-actions { display: flex; align-items: center; gap: 16px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 48px; padding: 0 30px; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 500; border: 1px solid var(--ink); position: relative; overflow: hidden; cursor: pointer;
+    transition: color 0.5s ease-out;
+  }
+  .btn-primary { background: var(--ink); color: var(--cream); }
+  .btn-primary span.fill {
+    position: absolute; inset: 0; background: var(--gold); transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); z-index: 0;
+  }
+  .btn-primary:hover span.fill, .btn-primary:focus-visible span.fill { transform: translateX(0); }
+  .btn-primary span.label { position: relative; z-index: 1; }
+  .btn-primary:hover, .btn-primary:focus-visible { color: var(--ink); }
+  .btn-secondary { background: transparent; color: var(--ink); transition: background 0.5s, color 0.5s; }
+  .btn-secondary:hover, .btn-secondary:focus-visible { background: var(--ink); color: var(--cream); }
+  .btn:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  .btn-sm { height: 40px; padding: 0 20px; font-size: 11px; }
+  .phone-chip {
+    display: none; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  @media (min-width: 560px) { .phone-chip { display: flex; } }
+  .phone-chip:hover, .phone-chip:focus-visible { color: var(--gold-deep); border-color: var(--gold); }
+
+  /* mobile nav toggle (below 900px, nav.primary is hidden — this is the only way to reach in-page sections) */
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px;
+    border: 1px solid var(--ink); background: transparent; cursor: pointer; flex-shrink: 0;
+  }
+  @media (min-width: 900px) { .nav-toggle { display: none; } }
+  .nav-toggle span { display: block; width: 20px; height: 1px; background: var(--ink); position: relative; }
+  .nav-toggle span::before, .nav-toggle span::after {
+    content: ""; position: absolute; left: 0; width: 20px; height: 1px; background: var(--ink); transition: transform 0.2s ease;
+  }
+  .nav-toggle span::before { top: -6px; }
+  .nav-toggle span::after { top: 6px; }
+  .nav-toggle[aria-expanded="true"] span { background: transparent; }
+  .nav-toggle[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+  .mobile-nav {
+    display: none; flex-direction: column; gap: 2px; background: var(--cream);
+    border-bottom: 1px solid var(--border); padding: 8px 0 16px;
+  }
+  .mobile-nav.open { display: flex; }
+  @media (min-width: 900px) { .mobile-nav { display: none !important; } }
+  .mobile-nav a {
+    padding: 14px 4px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-nav a:hover, .mobile-nav a:focus-visible { color: var(--gold-deep); }
+  .mobile-nav .phone-chip-mobile { display: flex; border-bottom: none; padding-top: 16px; font-size: 14px; }
+
+  /* hero */
+  .hero { position: relative; padding: 64px 0 88px; overflow: hidden; }
+  @media (min-width: 1024px) { .hero { padding: 96px 0 120px; } }
+  .hero .grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: end; }
+  @media (min-width: 1024px) { .hero .grid { grid-template-columns: 7fr 5fr; gap: 40px; } }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .eyebrow .line { width: 32px; height: 1px; background: var(--ink); }
+  .eyebrow span { font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--grey); }
+  .hero h1 {
+    font-weight: 400; line-height: 0.98; letter-spacing: -0.01em;
+    font-size: clamp(2.75rem, 7vw, 6rem);
+  }
+  .hero p.lede { max-width: 46ch; margin-top: 28px; font-size: 17px; color: var(--ink-soft); }
+  .hero .cta-row { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+  .hero-visual {
+    position: relative; aspect-ratio: 4/5; background: var(--ink); overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  }
+  .hero-visual .eye-mark {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual svg { width: 62%; height: auto; }
+  .vertical-label {
+    display: none; position: absolute; top: 40px; right: -30px; writing-mode: vertical-rl;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--grey);
+  }
+  @media (min-width: 1024px) { .vertical-label { display: block; } }
+
+  /* trust bar */
+  .trustbar { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--cream-muted); }
+  .trustbar .row { display: grid; grid-template-columns: repeat(2,1fr); }
+  @media (min-width: 700px) { .trustbar .row { grid-template-columns: repeat(4,1fr); } }
+  .trustbar .item { padding: 28px 16px; text-align: center; border-left: 1px solid var(--border); }
+  .trustbar .item:first-child { border-left: none; }
+  .trustbar .num { font-family: 'Playfair Display', serif; font-size: 30px; }
+  .trustbar .label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin-top: 4px; }
+
+  section { padding: 88px 0; border-top: 1px solid var(--border); }
+  .section-head { max-width: 640px; margin-bottom: 56px; }
+  .section-head .eyebrow span { color: var(--grey); }
+  .section-head h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.08; }
+  .dropcap p.intro:first-letter {
+    font-family: 'Playfair Display', serif; float: left; font-size: 4.6rem; line-height: 0.8;
+    margin-right: 12px; margin-top: 6px; font-weight: 500;
+  }
+
+  /* services */
+  .services-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+  @media (min-width: 800px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
+  .service {
+    border-top: 1px solid var(--ink); padding: 32px 8px 32px 0; transition: background 0.5s;
+  }
+  .service:hover { background: rgba(20,20,20,0.02); }
+  .service .n { font-size: 12px; color: var(--grey); letter-spacing: 0.1em; }
+  .service h3 { font-size: 21px; font-weight: 500; margin: 10px 0 8px; }
+  .service p { font-size: 14.5px; color: var(--ink-soft); max-width: 46ch; }
+
+  /* doctor */
+  .doctor { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: start; }
+  @media (min-width: 1024px) { .doctor { grid-template-columns: 4fr 8fr; } }
+  .doctor-portrait {
+    aspect-ratio: 3/4; background: linear-gradient(160deg, var(--ink) 0%, #262019 100%);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  .doctor-portrait svg { width: 46%; opacity: 0.9; }
+  .doctor h3 { font-size: 28px; font-weight: 500; margin-bottom: 4px; }
+  .doctor .cred { font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 20px; }
+  .doctor p { max-width: 62ch; color: var(--ink-soft); margin-bottom: 16px; }
+  .badge-row { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .badge { border: 1px solid var(--border-strong); padding: 8px 16px; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* brands */
+  .brand-strip { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--ink); }
+  .brand-strip span {
+    flex: 1 1 auto; min-width: 140px; text-align: center; padding: 20px 12px; border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); font-family: 'Playfair Display', serif; font-size: 15px; color: var(--ink-soft);
+  }
+
+  /* testimonials */
+  .testimonials { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  @media (min-width: 800px) { .testimonials { grid-template-columns: repeat(2,1fr); } }
+  .testimonial {
+    background: var(--cream); padding: 32px; border-left: 2px solid var(--border-strong); transition: border-color 0.5s, padding 0.5s;
+  }
+  .testimonial:hover { border-left-color: var(--gold); padding-left: 40px; }
+  .stars { color: var(--gold-deep); font-size: 14px; letter-spacing: 2px; margin-bottom: 14px; }
+  .testimonial p.quote { font-size: 15.5px; color: var(--ink-soft); margin-bottom: 16px; }
+  .testimonial .who { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+
+  /* dark section: appointment */
+  .dark-section { background: var(--ink); color: var(--cream); }
+  .dark-section .grey { color: rgba(245,240,232,0.66); }
+  .dark-section .section-head h2 { color: var(--cream); }
+  .dark-section .eyebrow .line { background: var(--gold); }
+  .dark-section .eyebrow span { color: var(--gold); }
+  .appt-grid { display: grid; grid-template-columns: 1fr; gap: 56px; }
+  @media (min-width: 1024px) { .appt-grid { grid-template-columns: 5fr 7fr; } }
+  .field { margin-bottom: 24px; }
+  .field label { display: block; font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(245,240,232,0.6); margin-bottom: 8px; }
+  .field input, .field textarea, .field select {
+    width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(245,240,232,0.4);
+    color: var(--cream); font-family: 'Inter', sans-serif; font-size: 15px; padding: 10px 0; height: 44px;
+  }
+  .field textarea { height: auto; padding-top: 10px; }
+  .field input::placeholder, .field textarea::placeholder { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(245,240,232,0.45); }
+  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--gold); }
+  .form-row { display: grid; grid-template-columns: 1fr; gap: 0 24px; }
+  @media (min-width: 600px) { .form-row.two { grid-template-columns: 1fr 1fr; } }
+  .form-note { font-size: 12.5px; color: rgba(245,240,232,0.55); margin-top: 4px; border-top: 1px solid rgba(245,240,232,0.2); padding-top: 20px; }
+  .dark-section .btn-primary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .dark-section .btn-primary span.fill { background: var(--cream); }
+  .dark-section .btn-primary:hover { color: var(--ink); }
+
+  /* hours + contact */
+  .contact-grid { display: grid; grid-template-columns: 1fr; gap: 48px; }
+  @media (min-width: 1024px) { .contact-grid { grid-template-columns: 5fr 4fr 3fr; } }
+  .hours-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .hours-table td { padding: 9px 0; border-top: 1px solid var(--border); }
+  .hours-table td:last-child { text-align: right; color: var(--ink-soft); }
+  .map-box { aspect-ratio: 4/3; background: var(--cream-muted); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+
+  footer { background: var(--ink); color: rgba(245,240,232,0.75); padding: 64px 0 28px; font-size: 13.5px; }
+  .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+  @media (min-width: 800px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+  footer h4 { color: var(--cream); font-family: 'Playfair Display', serif; font-weight: 500; font-size: 14px; margin-bottom: 16px; letter-spacing: 0.04em; }
+  footer ul { list-style: none; }
+  footer li { margin-bottom: 10px; }
+  footer a:hover, footer a:focus-visible { color: var(--gold); }
+  .footer-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(245,240,232,0.15); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12px; color: rgba(245,240,232,0.5); }
+
+  .skip-target:focus { outline: none; }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ============ photography ============ */
+  .ph { position: relative; overflow: hidden; background: var(--cream-muted); }
+  .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph.tall { aspect-ratio: 3/4; }
+  .ph.port { aspect-ratio: 4/5; }
+  .ph.wide { aspect-ratio: 3/2; }
+  .ph .cap {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 56px 20px 18px;
+    background: linear-gradient(to top, rgba(20,20,20,0.82), rgba(20,20,20,0));
+    color: var(--cream); font-family: 'Playfair Display', serif; font-size: clamp(18px, 2.2vw, 27px);
+    font-style: italic; line-height: 1.15;
+  }
+  .story-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+  .story-head h2 { font-size: clamp(2rem, 4.4vw, 3.4rem); font-weight: 400; line-height: 1.05; }
+  .story-head .rule { flex: 1 1 80px; height: 1px; background: var(--border); }
+  .verb { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold-deep); }
+  .story-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (min-width: 900px) {
+    .story-grid { grid-template-columns: repeat(6, 1fr); gap: 20px; }
+    .story-grid .a { grid-column: span 2; }
+    .story-grid .b { grid-column: span 4; }
+    .story-grid .c { grid-column: span 3; }
+    .story-grid .d { grid-column: span 3; }
+    .story-grid .e, .story-grid .f, .story-grid .g { grid-column: span 2; }
+  }
+  .quiet-band { position: relative; margin-top: 72px; }
+  .quiet-band .ph { aspect-ratio: 16/7; }
+  .quiet-band .over { position: absolute; inset: 0; display: flex; align-items: center; padding: 0 clamp(24px, 6vw, 96px); }
+  .quiet-band .over p {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3.6vw, 3rem); line-height: 1.1;
+    color: #fff; max-width: 18ch; text-shadow: 0 2px 24px rgba(0,0,0,0.55);
+  }
+  .optical-strip { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
+  @media (min-width: 800px) { .optical-strip { grid-template-columns: repeat(3, 1fr); } }
+  .optical-strip .ph { aspect-ratio: 4/3; }
+
+  /* doctor portrait — cut out on a cream field with a gold ground */
+  .portrait-stage {
+    position: relative; aspect-ratio: 3/4; background: var(--cream-muted);
+    display: flex; align-items: flex-end; justify-content: center; overflow: hidden;
+  }
+  .portrait-stage::before {
+    content: ""; position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%);
+    width: 86%; aspect-ratio: 1/1; border-radius: 50%; background: var(--gold); opacity: 0.9;
+  }
+  .portrait-stage img { position: relative; z-index: 1; height: 96%; width: auto; object-fit: contain; }
+
+  /* map */
+  .map-box { aspect-ratio: 4/3; border: 1px solid var(--border); overflow: hidden; }
+  .map-box iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+  /* booking band (replaces the old appointment form) */
+  .booking .lede { max-width: 52ch; margin-top: 18px; font-size: 17px; }
+  .booking h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.1; margin-top: 4px; }
+  .big-number { display: block; margin: 44px 0 8px; text-decoration: none; width: 100%; }
+  .big-number .digits {
+    display: block; font-family: 'Playfair Display', Georgia, serif; color: var(--cream);
+    font-size: clamp(2.4rem, 8.6vw, 7.5rem); line-height: 1; letter-spacing: -0.02em;
+    transition: color 0.4s ease; white-space: nowrap;
+  }
+  .big-number .under {
+    display: block; height: 2px; background: rgba(245,240,232,0.28); margin-top: 22px;
+    position: relative; overflow: hidden;
+  }
+  .big-number .under::after {
+    content: ""; position: absolute; inset: 0; background: var(--gold);
+    transform: translateX(-101%); transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .big-number:hover .digits, .big-number:focus-visible .digits { color: var(--gold); }
+  .big-number:hover .under::after, .big-number:focus-visible .under::after { transform: translateX(0); }
+  .big-number:focus-visible { outline: 2px solid var(--gold); outline-offset: 8px; }
+  .booking-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 40px; }
+  @media (min-width: 800px) { .booking-grid { grid-template-columns: repeat(3, 1fr); } }
+  .booking-grid .cell { padding: 28px 24px 28px 0; border-top: 1px solid rgba(245,240,232,0.2); }
+  @media (min-width: 800px) {
+    .booking-grid .cell { padding-left: 28px; border-left: 1px solid rgba(245,240,232,0.2); }
+    .booking-grid .cell:first-child { padding-left: 0; border-left: none; }
+  }
+  .booking-grid h3 {
+    font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+    font-family: 'Inter', sans-serif; font-weight: 500; margin-bottom: 12px;
+  }
+  .booking-grid p { color: rgba(245,240,232,0.78); font-size: 15px; }
+  .inline-link {
+    display: inline-block; margin-top: 14px; font-size: 13px; letter-spacing: 0.06em;
+    color: var(--cream); border-bottom: 1px solid rgba(245,240,232,0.45); padding-bottom: 2px;
+  }
+  .inline-link:hover, .inline-link:focus-visible { color: var(--gold); border-color: var(--gold); }
+  @media (max-width: 559px) {
+    .header-actions .btn-primary { white-space: nowrap; font-size: 10px; padding: 0 12px; letter-spacing: 0.12em; }
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="gridlines"><i style="left:64px"></i><i style="left:calc(50% - 0.5px)"></i><i style="right:64px"></i></div>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="topbar">
+  <div class="container">
+    <span>Optometry in Philadelphia, PA · 6331 Stenton Ave.</span>
+    <a href="tel:2155485949">Call us now: (215) 548-5949</a>
+  </div>
+</div>
+
+<header class="main">
+  <div class="container">
+    <a class="brand" href="#main">
+      <img src="optima_photo_assets/optima-logo.png" alt="Optima Vision Center" width="463" height="240">
+    </a>
+    <nav class="primary" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#doctor">Meet the Doctor</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a class="phone-chip" href="tel:2155485949" aria-label="Call (215) 548-5949">(215) 548-5949</a>
+      <a class="btn btn-primary" href="#appointment"><span class="fill"></span><span class="label">Book an Appointment</span></a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu"><span></span></button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Primary, mobile">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#doctor">Meet the Doctor</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+    <a class="phone-chip-mobile" href="tel:2155485949">Call (215) 548-5949</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="border-top:none; padding-top:64px;">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <div class="eyebrow"><span class="line"></span><span>Your Vision, Our Priority</span></div>
+          <h1>See the <em>world</em><br>clearly, close<br>to home.</h1>
+          <p class="lede">The goal of our optometry practice is to provide dedicated, friendly eye care — answering every question, keeping you current on the latest optometric care, and outfitting you in eyewear that keeps your eyes clear, healthy, and stylish.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#appointment"><span class="fill"></span><span class="label">Book an Appointment</span></a>
+            <a class="btn btn-secondary" href="tel:2155485949">Call (215) 548-5949</a>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <div class="vertical-label">Optometry — Philadelphia, PA</div>
+          <div class="ph port" style="box-shadow:0 8px 32px rgba(0,0,0,0.14);">
+            <img src="optima_photo_assets/laugh.jpg" alt="A smiling woman wearing gold-rimmed eyeglasses.">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trustbar">
+    <div class="container">
+      <div class="row">
+        <div class="item"><div class="num">4.9</div><div class="label">Average Patient Review</div></div>
+        <div class="item"><div class="num">In-Home</div><div class="label">Onsite &amp; In-Office Care</div></div>
+        <div class="item"><div class="num">All Ages</div><div class="label">Pediatric to Adult Care</div></div>
+        <div class="item"><div class="num">AA</div><div class="label">WCAG Accessibility Commitment</div></div>
+      </div>
+    </div>
+  </div>
+
+
+  <section aria-labelledby="story-h">
+    <div class="container">
+      <div class="story-head">
+        <div>
+          <div class="eyebrow"><span class="line"></span><span>Why It Matters</span></div>
+          <h2 id="story-h">Seeing well lets you <span class="verb">laugh, wonder,<br>learn, and read between the lines.</span></h2>
+        </div>
+        <span class="rule"></span>
+      </div>
+      <div class="story-grid">
+        <div class="ph tall a"><img src="optima_photo_assets/contemplate.jpg" alt="A woman in tortoiseshell glasses resting her chin on her hand, thinking."><span class="cap">…contemplate</span></div>
+        <div class="ph wide b"><img src="optima_photo_assets/learn.jpg" alt="A woman in glasses working at a tablet."><span class="cap">…learn</span></div>
+        <div class="ph wide c"><img src="optima_photo_assets/work.jpg" alt="A man in glasses reading at a laptop."><span class="cap">…read between the lines</span></div>
+        <div class="ph wide d"><img src="optima_photo_assets/wonder.jpg" style="object-position:50% 12%;" alt="A man in round glasses looking upward, thinking."><span class="cap">…wonder</span></div>
+        <div class="ph port e"><img src="optima_photo_assets/child.jpg" alt="A young child in black-framed glasses smiling."><span class="cap">…see a bright future</span></div>
+        <div class="ph port f"><img src="optima_photo_assets/fitting.jpg" alt="A woman laughing as she adjusts a new pair of glasses."><span class="cap">…recognize a friend</span></div>
+        <div class="ph port g"><img src="optima_photo_assets/focus.jpg" alt="A woman in violet-framed glasses looking at the camera."><span class="cap">…be seen</span></div>
+      </div>
+      <div class="quiet-band">
+        <div class="ph"><img src="optima_photo_assets/lens-clarity.jpg" alt="A hand holding glasses up to a landscape; the view is sharp inside the lens and blurred outside it."></div>
+        <div class="over"><p>The difference between getting by and seeing clearly.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" aria-labelledby="about-h">
+    <div class="container dropcap">
+      <div class="section-head">
+        <div class="eyebrow"><span class="line"></span><span>About the Practice</span></div>
+        <h2 id="about-h">Care built around the patients other practices don't have time for.</h2>
+      </div>
+      <p class="intro" style="max-width:70ch; font-size:17px; color:var(--ink-soft);">Optima Vision Center is committed to excellence in serving your family's complete eye care needs — comprehensive exams, contact lens fittings, and a full optical department of high-fashion eyewear and designer frames. Dr. Firmin has built a practice that goes further than routine care: onsite, at-home, and in-office visits for patients other providers often turn away, including elderly patients, special-needs patients, and those with complex, trust-building needs. Nobody is taking care of their eyes except for us.</p>
+    </div>
+  </section>
+
+  <section id="services" aria-labelledby="services-h">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow"><span class="line"></span><span>What We Offer</span></div>
+        <h2 id="services-h">Featured Services</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service"><div class="n">01</div><h3>Comprehensive Eye Exams</h3><p>Refraction, slit lamp, intraocular pressure, and retinal exam — full evaluation to catch problems before they cost you vision.</p></div>
+        <div class="service"><div class="n">02</div><h3>Special Needs Eye Exams</h3><p>Patient, relationship-based care for patients who need more time and trust — sometimes years of it — to get comfortable.</p></div>
+        <div class="service"><div class="n">03</div><h3>Diabetic Eye Exams</h3><p>Regular screening for diabetic retinopathy and related complications, coordinated with your primary care physician.</p></div>
+        <div class="service"><div class="n">04</div><h3>Contact Lens Exams &amp; Fittings</h3><p>Daily disposables through custom gas-permeable lenses — including fittings for astigmatism and multifocal needs.</p></div>
+        <div class="service"><div class="n">05</div><h3>Pediatric Eye Care</h3><p>A lighthearted, fun environment that protects the visual systems kids need for school and everyday life.</p></div>
+        <div class="service"><div class="n">06</div><h3>Optical Department &amp; Eyewear Selection</h3><p>A full selection of high-fashion eyewear and designer frames, fitted and dispensed on site.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="doctor" aria-labelledby="doctor-h">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow"><span class="line"></span><span>Meet Your Optometrist</span></div>
+        <h2 id="doctor-h">Dr. Chelise Firmin, O.D.</h2>
+      </div>
+      <div class="doctor">
+        <div class="portrait-stage" style="box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+          <img src="optima_photo_assets/drf-studio-cut.webp" alt="Dr. Chelise Firmin, OD, in a white lab coat.">
+        </div>
+        <div>
+          <h3>Knowledgeable. Experienced. Trusted.</h3>
+          <p class="cred">Licensed Optometrist</p>
+          <p>As a licensed optometrist, Dr. Firmin provides exams, diagnoses, and treatment for disorders that affect the eye and vision. Beyond training in eye diseases and disorders, she's trained in anatomy, biochemistry, and physiology — equipping her to recognize a wider range of health issues, including glaucoma, macular degeneration, diabetes, and hypertension.</p>
+          <p>Dr. Firmin is known for working with patients other providers pass on — special-needs adults and children, elderly patients, and those who need real time to build trust before a routine exam feels routine.</p>
+          <div class="badge-row">
+            <span class="badge">Glaucoma</span>
+            <span class="badge">Macular Degeneration</span>
+            <span class="badge">Diabetic Eye Care</span>
+            <span class="badge">Hypertension-Related Vision</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="brands-h">
+    <div class="container">
+      <div class="section-head" style="margin-bottom:32px;">
+        <div class="eyebrow"><span class="line"></span><span>The Optical Department</span></div>
+        <h2 id="brands-h">Featured Brands</h2>
+      </div>
+      <div class="optical-strip">
+        <div class="ph wide"><img src="optima_photo_assets/frame-wall.jpg" alt="A wall display of eyeglass frames."></div>
+        <div class="ph wide"><img src="optima_photo_assets/flatlay.jpg" alt="Dozens of eyeglass frames laid out in rows."></div>
+        <div class="ph wide"><img src="optima_photo_assets/shop.jpg" alt="A customer browsing a lit wall of frames."></div>
+      </div>
+
+      <div class="brand-strip">
+        <span>Saint Laurent</span><span>Prada</span><span>Gucci</span><span>Gap</span><span>Glemaud</span><span>L.A.M.B.</span><span>Roberto Cavalli</span><span>Burberry</span><span>MCM</span><span>Versace</span><span>Tom Ford</span><span>Marc Jacobs</span><span>Swarovski</span><span>Kate Spade</span>
+      </div>
+      <!-- OPEN ITEM: insurance acceptance was never sourced. Confirm with the practice and list insurers here. -->
+    </div>
+  </section>
+
+  <section id="reviews" aria-labelledby="reviews-h">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow"><span class="line"></span><span>4.9 Average Reviews</span></div>
+        <h2 id="reviews-h">What Patients Say</h2>
+      </div>
+      <div class="testimonials">
+        <div class="testimonial">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="quote">"Dr. Firmin is the absolute best at what she does. I have never felt so well-informed and confident in my eye care. She is the utmost professional and really cares for her patients. This is truly the best eye doctor in Philadelphia. Highly recommended."</p>
+          <div class="who">Nina M.</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="quote">"Great experience. Dr. Firmin is so knowledgeable and very helpful."</p>
+          <div class="who">Mary S.</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="quote">"The glasses were so comfortable and no matter how bright the light they still protect."</p>
+          <div class="who">Mark M.</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="quote">"I have been going here for years. The best service and black owned and operated. Love the level of service."</p>
+          <div class="who">Pat J.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appointment" class="dark-section booking" aria-labelledby="appt-h">
+    <div class="container">
+      <div class="eyebrow"><span class="line"></span><span>Patient Center</span></div>
+      <h2 id="appt-h">Book by phone.</h2>
+      <p class="grey lede">We take appointments the direct way — one call, a real person, a time that works.
+        Onsite, at-home, and in-office visits are all available.</p>
+      <a class="big-number" href="tel:2155485949" aria-label="Call Optima Vision Center at (215) 548-5949">
+        <span class="digits">(215) 548-5949</span>
+        <span class="under"></span>
+      </a>
+      <div class="booking-grid">
+        <div class="cell">
+          <h3>Visit us</h3>
+          <p>6331 Stenton Ave.<br>Philadelphia, PA 19138</p>
+          <a class="inline-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=6331+Stenton+Ave%2C+Philadelphia%2C+PA+19138" target="_blank" rel="noopener">Get directions</a>
+        </div>
+        <div class="cell">
+          <h3>When to call</h3>
+          <p>Monday through Friday, mornings into the late afternoon.<br>Saturday mornings.</p>
+          <a class="inline-link" href="#contact">See full hours</a>
+        </div>
+        <div class="cell">
+          <h3>What to bring</h3>
+          <p>Your insurance card, a list of any current medications, and the glasses or contacts you wear now.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-h">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow"><span class="line"></span><span>Visit Us</span></div>
+        <h2 id="contact-h">Contact Information</h2>
+      </div>
+      <div class="contact-grid">
+        <div>
+          <p style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:6px;">6331 Stenton Ave.</p>
+          <p style="color:var(--ink-soft); margin-bottom:18px;">Philadelphia, PA 19138</p>
+          <a class="phone-chip" href="tel:2155485949" style="font-size:20px; font-family:'Playfair Display',serif; border:none; display:inline;">(215) 548-5949</a>
+          <div class="map-box" style="margin-top:28px;"><iframe title="Map showing Optima Vision Center at 6331 Stenton Avenue, Philadelphia" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=6331%20Stenton%20Ave%2C%20Philadelphia%2C%20PA%2019138&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
+          <p style="margin-top:10px; font-size:13px;"><a href="https://www.google.com/maps/dir/?api=1&amp;destination=6331+Stenton+Ave%2C+Philadelphia%2C+PA+19138" target="_blank" rel="noopener" style="border-bottom:1px solid var(--border-strong);">Get directions</a></p>
+        </div>
+        <div>
+          <h3 style="font-size:14px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:16px; color:var(--grey);">Hours of Operation</h3>
+          <table class="hours-table">
+            <tr><td>Monday</td><td>9:00am – 3:00pm</td></tr>
+            <tr><td>Tuesday</td><td>9:00am – 5:00pm</td></tr>
+            <tr><td>Wednesday</td><td>9:00am – 5:00pm</td></tr>
+            <tr><td>Thursday</td><td>9:00am – 5:00pm</td></tr>
+            <tr><td>Friday</td><td>9:00am – 5:00pm</td></tr>
+            <tr><td>Saturday</td><td>10:00am – 2:00pm</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+          <!-- OPEN ITEM: hours below come from the most recent archived capture (Jan 2026). An older capture disagreed on Mon-Fri. Confirm with Dr. Firmin before launch. -->
+        </div>
+        <div>
+          <h3 style="font-size:14px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:16px; color:var(--grey);">Related</h3>
+          <ul style="list-style:none; font-size:14px; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="https://share.google/7s0k0dUxGdNJn4wqq" target="_blank" rel="noopener" style="border-bottom:1px solid var(--border-strong);">Google Business Profile</a></li>
+            <li><a href="https://www.yelp.com/biz/optima-vision-center-philadelphia" target="_blank" rel="noopener" style="border-bottom:1px solid var(--border-strong);">Yelp</a></li>
+          </ul>
+          <!-- Google and Yelp links supplied by the client Aug 21; neither could be fetched from the build environment to verify. Click both once before launch. -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Optima Vision Center</h4>
+        <p style="max-width:36ch; color:rgba(245,240,232,0.65);">Comprehensive eye care in Philadelphia, PA. Your Vision, Our Priority.</p>
+      </div>
+      <div>
+        <h4>Practice</h4>
+        <ul><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#doctor">Meet the Doctor</a></li><li><a href="#reviews">Reviews</a></li></ul>
+      </div>
+      <div>
+        <h4>Patient Center</h4>
+        <ul><li><a href="#appointment">Book an Appointment</a></li><li><a href="tel:2155485949">Call (215) 548-5949</a></li></ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul><li><a href="tel:2155485949">(215) 548-5949</a></li><li>6331 Stenton Ave.</li><li>Philadelphia, PA 19138</li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Optima Vision Center. All Rights Reserved.</span>
+      <span>Accessible design · WCAG 2.1 AA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('navToggle');
+    var panel = document.getElementById('mobileNav');
+    if (!toggle || !panel) return;
+    toggle.addEventListener('click', function () {
+      var open = panel.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    panel.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
